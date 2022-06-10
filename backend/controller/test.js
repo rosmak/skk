@@ -1,1 +1,1 @@
-export const test = (req, res) => res.send("hmmmmm")
+export const test = (req, res) => res.send("just testing - test justing")

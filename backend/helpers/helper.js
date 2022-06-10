@@ -29,3 +29,5 @@ export const signJWT = (data) => {
         expiresIn: JWT_EXPIRY_SECONDS,
     })
 }
+
+export const badResponse = (res, value = "", code = 400) => res.status(code).send({ error: value })

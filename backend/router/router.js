@@ -1,19 +1,20 @@
-import { getDepartures } from "../controller/departure.js"
+import { getTransfers } from "../controller/transfer.js"
 import { login, register } from "../controller/auth.js"
 import { test } from "../controller/test.js"
 import { requireAuthentication } from "../helpers/middleware.js"
-import { buyTicket, getTickets } from "../controller/ticket.js"
+import { buyTicket, cancelTicket, getTickets } from "../controller/ticket.js"
 
 const initRouter = (app) => {
     app.get("/", test)
     app.post("/register", register)
     app.post("/login", login)
-    app.get("/departure", getDepartures)
+    app.get("/departure", getTransfers)
 
     // all routes under this call require authentication user to be authenticated
     app.use(requireAuthentication)
     app.get("/ticket", getTickets)
-    app.post("/buyTicket/:departureID", buyTicket)
+    app.post("/cancelTicket/:ticketId", cancelTicket)
+    app.post("/buyTicket/:transferId", buyTicket)
 }
 
 export default initRouter

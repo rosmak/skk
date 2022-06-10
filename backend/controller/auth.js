@@ -1,47 +1,45 @@
-import { generateID, isValidPassword, signJWT } from "../helpers/helper.js"
-import data from "../data/data.js"
-import jwt from "jsonwebtoken"
-import { JWT_EXPIRY_SECONDS, JWT_KEY } from "../helpers/constants.js"
+import { badResponse, isValidPassword, signJWT } from "../helpers/helper.js"
+import { JWT_EXPIRY_SECONDS } from "../helpers/constants.js"
+import { queryDB } from "../pg/connection.js"
+import { INSERT_USER_SQL, SELECT_USER_BY_EMAIL_AND_PASSWORD_SQL, SELECT_USER_BY_EMAIL_SQL } from "../pg/user.js"
 
-export const register = (req, res) => {
+export const register = async (req, res) => {
     const { name, email, password } = req.body
-    // TODO: add better responses
-    if (!name || !email || !password) return res.send("Please enter all necessary fields.")
-    // TODO: add better responses
-    if (!isValidPassword(password)) return res.send("Password needs to be at least 7 characters long.")
+    if (!name || !email || !password) return badResponse(res, "Please enter all necessary fields.")
+    if (!isValidPassword(password)) return badResponse(res, "Password needs to be at least 7 characters long.")
 
-    const user = data.users.find((user) => user.email === email)
-    // TODO: add better responses
-    if (user) return res.send("User already exists with that email. ")
+    try {
+        let resCount = await queryDB(SELECT_USER_BY_EMAIL_SQL(email))
+        if (resCount.rowCount > 0) {
+            return badResponse(res, "user already exists")
+        }
 
-    const newUser = {
-        userID: generateID(),
-        name,
-        email,
-        password,
-        tickets: [],
+        let resNewUser = await queryDB(INSERT_USER_SQL(name, email, password))
+        return res.send(resNewUser.rows[0])
+    } catch (error) {
+        console.error(error)
+        return badResponse(res, "", 500)
     }
-
-    data.users.push(newUser)
-    // TODO: add better responses
-    return res.send("Congratulations!!! You registered successfully!")
 }
 
-export const login = (req, res) => {
+export const login = async (req, res) => {
     const { email, password } = req.body
-    // TODO: add better responses
-    if (!email || !password) return res.status(401).send("Please provide email and password")
+    if (!email || !password) return badResponse(res, "Please provide email and password")
+    try {
+        let users = await queryDB(SELECT_USER_BY_EMAIL_AND_PASSWORD_SQL(email, password))
 
-    const user = data.users.find((user) => user.email === email && user.password === password)
-    if (!user) {
-        // TODO: add better responses
-        return res.status(401).send("Wrong username or password")
+        if (users.rowCount !== 1) {
+            return badResponse(res, "Wrong username or password")
+        }
+        let user = users.rows[0]
+
+        const token = signJWT({ userId: user.userId, name: user.name, email: user.email })
+
+        res.cookie("token", token, { maxAge: JWT_EXPIRY_SECONDS * 1000 })
+
+        return res.send()
+    } catch (error) {
+        console.error(error)
+        return badResponse(res, "", 500)
     }
-
-    const token = signJWT({ email: user.email })
-
-    res.cookie("token", token, { maxAge: JWT_EXPIRY_SECONDS * 1000 })
-
-    // TODO: add better responses
-    return res.send("okay you probably logged in")
 }
