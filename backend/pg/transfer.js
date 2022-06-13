@@ -1,9 +1,15 @@
 export const GET_TRANSFERS_SQL = (date, from, to) => {
-    let query = "SELECT * FROM transfers AS t WHERE 1 = 1"
-    if (queryArr.length === 0) query += " AND 1 = 1"
-    if (queryArr.includes("date")) query += ` AND t.departure::date = '${date}'::date`
-    if (queryArr.includes("from")) query += ` AND t.from = '${from.toLowerCase()}'`
-    if (queryArr.includes("to")) query += ` AND t.to = '${to.toLowerCase()}'`
+    let WHERE = ""
+    if (date) WHERE += ` AND tr.departure::date = '${date}'::date`
+    if (from) WHERE += ` AND tr.from = '${from.toLowerCase()}'`
+    if (to) WHERE += ` AND tr.to = '${to.toLowerCase()}'`
+    let query = `SELECT tr."transferId", tr.from, tr.to, tr.departure, tr.arrival, tr."companyId", 
+    (c.pax - (SELECT COUNT(*) FROM tickets AS t WHERE t."transferId" = tr."transferId"))::INTEGER AS "availableSeats",
+    (tr.departure::timestamp > NOW()::timestamp)::BOOL as "canBuy"
+    FROM transfers AS tr 
+    JOIN companies AS c ON c."companyId" = tr."companyId"
+    WHERE 1 = 1 ${WHERE}`
+
     return query
 }
 export const SELECT_TRANSFER_AND_AVAILABLE_SEATS_SQL = (transferId) => {

@@ -37,7 +37,8 @@ export const login = async (req, res) => {
 
         res.cookie("token", token, { maxAge: JWT_EXPIRY_SECONDS * 1000 })
 
-        return res.send()
+        delete user.password
+        return res.send(user)
     } catch (error) {
         console.error(error)
         return badResponse(res, "", 500)

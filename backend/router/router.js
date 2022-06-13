@@ -8,7 +8,7 @@ const initRouter = (app) => {
     app.get("/", test)
     app.post("/register", register)
     app.post("/login", login)
-    app.get("/departure", getTransfers)
+    app.get("/transfer", getTransfers)
 
     // all routes under this call require authentication user to be authenticated
     app.use(requireAuthentication)
