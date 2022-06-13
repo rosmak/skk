@@ -8,7 +8,7 @@ export const GET_TRANSFERS_SQL = (date, from, to) => {
     (tr.departure::timestamp > NOW()::timestamp)::BOOL as "canBuy"
     FROM transfers AS tr 
     JOIN companies AS c ON c."companyId" = tr."companyId"
-    WHERE 1 = 1 ${WHERE}`
+    WHERE tr.departure::timestamp > NOW()::timestamp ${WHERE}`
 
     return query
 }

@@ -1,0 +1,207 @@
+{
+	"info": {
+		"_postman_id": "efd7a2f1-5eb6-460a-9cfc-c97f7507a979",
+		"name": "SKK",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6437447"
+	},
+	"item": [
+		{
+			"name": "Root",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTransfers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/transfer?date=2022-06-10&from=zagreb&to=split",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transfer"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2022-06-10"
+						},
+						{
+							"key": "from",
+							"value": "zagreb"
+						},
+						{
+							"key": "to",
+							"value": "split"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Dora the Explorer\",\n    \"email\": \"dora@explorer.com\",\n    \"password\": \"whyPasswordNeedsToBe7CharactersLong\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"dora@explorer.com\",\n    \"password\": \"whyPasswordNeedsToBe7CharactersLong\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTickets",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/ticket",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"ticket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CancelTicket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/cancelTicket/475e9b4a-31ae-4708-8a6a-df815fdf7476",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cancelTicket",
+						"475e9b4a-31ae-4708-8a6a-df815fdf7476"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BuyTicket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cardNumber\": \"0000 0000 0000 0000\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/buyTicket/2ef9e434-83c2-4628-a1fd-05c7402a7329",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"buyTicket",
+						"2ef9e434-83c2-4628-a1fd-05c7402a7329"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
