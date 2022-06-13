@@ -8,6 +8,11 @@ node 16+
 
 How to run:
 clone project
+
+add your db configuration to
+```
+backend/pg/connection.js
+```
 ```
 cd backend
 npm install
